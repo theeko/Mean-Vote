@@ -1,3 +1,9 @@
+require("./models/Users");
+require("./models/Polls");
+var mongoose = require("mongoose");
+require('./config/passport');
+mongoose.connect("mongodb://redditadmin:redditadmin@ds061464.mongolab.com:61464/reddit-clone");
+var passport = require('passport');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -16,6 +22,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(passport.initialize());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

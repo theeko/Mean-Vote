@@ -1,4 +1,6 @@
 body {  }
+a { color: white; }
+a:hover, a:visited { text-decoration: none; }
 .fa { font-size: 4em; }
 .fa-flash { color: yellow; }
 .fa-globe { color: green; }

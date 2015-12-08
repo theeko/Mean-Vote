@@ -7,6 +7,11 @@ app.config(['$stateProvider', '$urlRouterProvider',
             url: '/home',
             templateUrl: '/home.html',
             controller: 'mainCtrl'
+            })
+          .state('register', {
+            url: '/register',
+            templateUrl: '/register.html',
+            controller: 'registerCtrl'
             });
         $urlRouterProvider.otherwise('home');
       }
