@@ -5,7 +5,8 @@ var jwt = require('jsonwebtoken');
 var UserSchema = new mongoose.Schema({
   username: {type: String, lowercase: true, unique: true },
   hash: String,
-  salt: String
+  salt: String,
+  polls : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Poll' }]
 });
 
 UserSchema.methods.setPassword = function(password){
@@ -19,16 +20,17 @@ UserSchema.methods.validPassword = function(password){
   return this.hash === hash;
 };
 
-UserSchema.methods.generateHWT = function(){
-  var today = new Date();
-  var exp = new Date(today);
-  exp.setDate(today.getDate()+ 60);
-  
-  return jwt.sign({
-    _id: this._id,
-    username: this.username,
-    exp: parseInt(exp.getTime()/1000)
-  }, "SECRET");
-};
+UserSchema.methods.generateJWT = function () {
+    var today = new Date();
+    var exp = new Date(today);
+    exp.setDate(today.getDate() + 60);
+    
+    return jwt.sign({
+        _id: this._id,
+        username: this.username,
+        exp: parseInt(exp.getTime() / 1000)
+        
+    }, 'SECRET')
+}
 
 mongoose.model('User', UserSchema);

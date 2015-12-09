@@ -13,10 +13,10 @@
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
     	<div class="navbar-header">	
-    		<div class="navbar-brand"><a href="#/home">Mean App</a></div>
+    		<div class="navbar-brand"><a href="#/home">Mean Vote</a></div>
     	</div>
-        <ul class="nav navbar-nav navbar-right">
-            <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+        <ul class="nav navbar-nav navbar-right" ng-controller="NavCtrl">
+            <li ng-show="isLoggedIn()"><a ng-href="/#/profile">{{ currentUser() }}</a></li>
             <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
             <li ng-hide="isLoggedIn()"><a ng-href="/#/login">Log In</a></li>
             <li ng-hide="isLoggedIn()"><a ng-href="/#/register">Register</a></li>

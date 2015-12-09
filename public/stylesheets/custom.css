@@ -1,7 +1,8 @@
-body {  }
-a { color: white; }
-a:hover, a:visited { text-decoration: none; }
+body { background: #87D37C; }
+a { color: #D24D57; }
+a:hover, a:visited, a:active { text-decoration: none; color:  #D24D57;}
 .fa { font-size: 4em; }
 .fa-flash { color: yellow; }
 .fa-globe { color: green; }
 .fa-facebook { color: #4393B9; }
+.registerbut { color: black; }

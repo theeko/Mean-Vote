@@ -1,0 +1,11 @@
+<h1>Polls</h1>
+<div class="container">
+      <div class="col-md-3 text-center" ng-repeat="poll in polls">
+        <p>{{poll.question}}</p>
+        <p>{{poll.choices}}</p>
+        </div>
+        <div class="col-md-3 text-center" ng-repeat="choice in polls.choices">
+          <p>{{choice}}</p>
+        </div>
+      </div>
+    </div>
