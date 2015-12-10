@@ -58,9 +58,13 @@ router.param('poll', function(req, res, next, id) {
   });
 });
 
-router.get('/polls/:poll', function(req, res) {
-  console.log(test);
-    res.json(req.poll);
+router.get('/polls/:id', function(req, res,next) {
+  var id = req.params.id;
+  Poll.find({_id: id}, function (err, poll) {
+        if (err) { next(err) }
+        
+        res.json(poll);
+    });
 });
 
 // router.get("/profile", function(req, res, next) {

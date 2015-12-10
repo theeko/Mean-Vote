@@ -19,12 +19,12 @@
             .state('pollresult', {
                 url: '/polls/{id}',
                 templateUrl: '/pollresult.html',
-                controller: 'pollresultCtrl'
-                // resolve: {
-                //     poll: ['$stateParams', 'polls', function ($stateParams, polls) {
-                //         return polls.get($stateParams.id);
-                //     }]
-                // }
+                controller: 'pollresultCtrl',
+                resolve: {
+                    poll: ['$stateParams', 'polls', function ($stateParams, polls) {
+                        return polls.get($stateParams.id);
+                    }]
+                }
             })
             .state('profile', {
               url: '/profile',
@@ -146,16 +146,19 @@
   }]);
   
   app.controller("pollresultCtrl", ["$scope", "polls", "auth", "poll", function($scope, polls, auth, poll){
-  //   $scope.poll = poll;
-  //   $scope.isLoggedIn = auth.isLoggedIn;
-  //   $scope.choices = poll.choices;
-  //   $scope.labels = [];
-  //   $scope.data = [];
+    
+    
+      $scope.poll = poll;
+    $scope.labels = [];
+    $scope.data = [];  
+    
+      for(var i =0; i<2; i++){
+        $scope.labels.push(poll.data[0].choices[i].option);
+        $scope.data.push(poll.data[0].choices[i].votes);
+      }
+    
 
-  // for(var i =0; i<poll.choices.length; i++){
-  //   $scope.labels.push(poll.choices[i].question);
-  //   $scope.data.push(poll.choices[i].votes);
-  // }
+  
   }]);
   
   app.factory("polls", ["$http", "auth",function($http, auth){
@@ -198,9 +201,9 @@
       };
     
     o.get = function (id) {
-      return $http("/polls/" + id).then(function(res){
+      return $http.get("/polls/" + id).success(function(res){
         return res.data;
-      });
+      }).error(function(err){console.log(err) });
     };
     
     return o;
