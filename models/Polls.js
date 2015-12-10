@@ -6,9 +6,9 @@ var PollSchema = new mongoose.Schema({
    author : String
 });
 
-// PollSchema.methods.upvote = function(){
-//    this.choices[vote].votes += 1;
-//    this.save(cb);
-// };
+PollSchema.methods.upvote = function(index,cb){
+   this.choices[index].votes += 1;
+   this.save(cb);
+};
 
 mongoose.model("Poll", PollSchema);

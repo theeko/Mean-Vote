@@ -1,6 +1,7 @@
 "use strict";
+
 (function(){
-  var app = angular.module("myApp", [ "ui.router"]);
+  var app = angular.module("myApp", [ "ui.router", "chart.js"]);
   
   app.config(['$stateProvider', '$urlRouterProvider', 
         function($stateProvider, $urlRouterProvider){
@@ -9,7 +10,22 @@
               url: '/home',
               templateUrl: '/home.html',
               controller: 'mainCtrl'
+              // resolve: {
+              //       poll: ['$stateParams', 'polls', function ($stateParams, polls) {
+              //           return polls.get($stateParams.id);
+              //       }]
+              //   }
               })
+            .state('pollresult', {
+                url: '/polls/{id}',
+                templateUrl: '/pollresult.html',
+                controller: 'pollresultCtrl'
+                // resolve: {
+                //     poll: ['$stateParams', 'polls', function ($stateParams, polls) {
+                //         return polls.get($stateParams.id);
+                //     }]
+                // }
+            })
             .state('profile', {
               url: '/profile',
               templateUrl: '/profile.html',
@@ -30,7 +46,10 @@
                 resolve: {
                   pollsResolve: ["polls",function(polls){
                     return polls.getAll();
-                  }]}
+                  }]},
+                  poll: ['$stateParams', 'polls', function ($stateParams, polls) {
+                        return polls.get($stateParams.id);
+                    }]
               })
             .state('newpoll', {
                 url: '/newpoll',
@@ -67,17 +86,31 @@
   
   app.controller("pollCtrl", ["polls","auth","$scope", function(polls, auth, $scope){
       $scope.polls = polls.polls;
+      
+      $scope.upvote= function(poll, pollid,index){
+        if(!auth.isLoggedIn()){ return; }
+        polls.upvote(poll, pollid,index);
+        
+      };
   }]);
   
-  app.controller("profileCtrl", ["polls","auth","$scope", function(polls, auth, $scope){
+  app.controller("profileCtrl", ["polls","auth","$scope", "poll", function(polls, auth, $scope, poll){
       $scope.currentUser = auth.currentUser();
       $scope.polls = polls.polls;
+      $scope.poll = poll
       $scope.deletePoll = function(id, poll){
         if($scope.currentUser == poll.author){
         polls.delete(id);
-        polls.getAll();
+         window.location.href = "#profile";
         }
       };
+      $scope.upvote= function(poll, pollid,index){
+        if(!auth.isLoggedIn()){ return; }
+        polls.upvote(poll, pollid,index);
+        
+      };
+      $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales", "Tele Sales", "Corporate Sales"];
+  $scope.data = [300, 500, 100, 40, 120];
   }]);
   
   app.controller("mainCtrl", ["$scope", "polls", "auth", function($scope, polls, auth){
@@ -93,9 +126,36 @@
       $scope.choice = "";
     };
     
-    $scope.incrementUpvotes = function(post){
-       polls.upvote(post);
-    };
+  }]);
+  
+  app.controller("profileCtrl", ["polls","auth","$scope", function(polls, auth, $scope){
+      $scope.currentUser = auth.currentUser();
+      $scope.polls = polls.polls;
+      $scope.deletePoll = function(id, poll){
+        if($scope.currentUser == poll.author){
+        polls.delete(id);
+         window.location.href = "#profile";
+        }
+      };
+      $scope.upvote= function(poll, pollid,index){
+        if(!auth.isLoggedIn()){ return; }
+        polls.upvote(poll, pollid,index);
+        
+      };
+      
+  }]);
+  
+  app.controller("pollresultCtrl", ["$scope", "polls", "auth", "poll", function($scope, polls, auth, poll){
+  //   $scope.poll = poll;
+  //   $scope.isLoggedIn = auth.isLoggedIn;
+  //   $scope.choices = poll.choices;
+  //   $scope.labels = [];
+  //   $scope.data = [];
+
+  // for(var i =0; i<poll.choices.length; i++){
+  //   $scope.labels.push(poll.choices[i].question);
+  //   $scope.data.push(poll.choices[i].votes);
+  // }
   }]);
   
   app.factory("polls", ["$http", "auth",function($http, auth){
@@ -104,6 +164,15 @@
     o.getAll = function(){
       return $http.get("/polls").success(function(data){
         angular.copy(data, o.polls);
+      });
+    };
+    
+    o.upvote = function(poll, pollid, index){
+      return $http.put('/polls/' + pollid + "/" + index, null, {
+          headers: {Authorization: 'Bearer '+auth.getToken()}
+      }).success(function(data){
+        poll.choices[index].votes +=1;
+        // window.location.href = "#polls";
       });
     };
     
@@ -118,14 +187,7 @@
           headers: {Authorization: 'Bearer '+auth.getToken()}
       }).success(function(data){
         o.polls.push(data);
-      });
-    };
-    
-    o.upvote = function(poll) {
-      return $http.put('/polls/' + poll._id + '/upvote', null, {
-        headers: {Authorization: 'Bearer '+auth.getToken()}
-      }).success(function(data){
-        poll.upvotes += 1;
+         window.location.href = "#profile"
       });
     };
     

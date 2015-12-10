@@ -1,0 +1,9 @@
+<div class="container">
+  <h1>{{poll.question}}</h1>
+  <canvas id="pie" class="chart chart-pie"
+    chart-data="data" chart-labels="labels">
+  </canvas> 
+  <div ng-repeat="choice in poll.choices">
+    <p>{{choice}}</p>
+  </div>
+</div>

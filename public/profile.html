@@ -1,14 +1,20 @@
 <div class="container">
-<aside class="col-md-3">
-<h1>My Polls</h1>
-<a href="/#/newpoll"><p>Create new poll</p></a>
-</aside>
-<div class="col-md-6 ">
-      <div class="col-md-4 text-center" ng-repeat="poll in polls">
-        <p>{{poll.question}}</p><span ng-click="deletePoll(poll._id, poll)">Delete</span>
-        <div class="col-md-4 text-center" ng-repeat="choice in poll.choices">
-          <p>{{choice.option}}</p>
+  <aside class="col-md-3">
+  <h1>My Polls</h1>
+  <a href="/#/newpoll"><p>Create new poll</p></a>
+  </aside>
+  <div class="col-md-9">
+        <div class="col-md-4 text-center well" ng-repeat="poll in polls">
+          <button class="btn btn-danger" ng-click="deletePoll(poll._id, poll)">Delete</button>
+          <h4>{{poll.question}}</h4>
+          <div class="col-md-4 text-center" ng-repeat="choice in poll.choices track by $index">
+            
+            <p>{{choice.option}}</p><span>{{choice.votes}}</span></p>
+            <button class="btn btn-default" ng-click="upvote(poll, poll._id, $index)">upvote</button>
+          </div>
+          <a ng-href="/#/polls/{{poll._id}}" class="col-md-12">See Results</a>
         </div>
-        </div>
-    </div>
+        
+  </div>
 </div>
+

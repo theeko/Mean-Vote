@@ -1,11 +1,14 @@
+<div class="container text-center">
 <h1>Polls</h1>
-<div class="container">
-      <div class="col-md-3 text-center" ng-repeat="poll in polls">
-        <p>{{poll.question}}</p>
-        <div class="col-md-3 text-center" ng-repeat="choice in poll.choices">
-          <p>{{choice.option}}</p>
-        </div>
+  <div class="col-md-12">
+        <div class="col-md-4 text-center well" ng-repeat="poll in polls">
+          <h4>{{poll.question}}</h4>
+          <div class="col-md-4 text-center" ng-repeat="choice in poll.choices track by $index">
+            <p>{{choice.option}}</p><span>{{choice.votes}}</span></p>
+            <button class="btn btn-default" ng-click="upvote(poll, poll._id, $index)">upvote</button>
+          </div>
         </div>
         
-      </div>
-    </div>
+  </div>
+</div>
+</div>

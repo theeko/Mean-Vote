@@ -58,9 +58,10 @@ router.param('poll', function(req, res, next, id) {
   });
 });
 
-// router.get('/polls/:poll', function(req, res) {
-//     res.json(req.poll);
-// });
+router.get('/polls/:poll', function(req, res) {
+  console.log(test);
+    res.json(req.poll);
+});
 
 // router.get("/profile", function(req, res, next) {
 //   Poll.find({author: req.payload.username},function(err, polls){
@@ -84,6 +85,15 @@ router.delete('/polls/:poll', function(req, res, next) {
 
         res.json(poll);
     });
+});
+
+router.put('/polls/:poll/:index', auth, function(req, res, next) {
+    var index = req.params.index;
+    
+   req.poll.upvote(index, function(err,poll){
+     if(err){ next(err); }
+     res.json(poll);
+   });
 });
 
 router.get("/polls",  function(req, res, next) {
