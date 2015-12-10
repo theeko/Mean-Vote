@@ -1,21 +1,20 @@
 <div class="col-md-6 col-md-offset-3 text-center">
     <h3>Create Poll</h3>
-    <form ng-submit="addPolls()"
+    <p>{{error}}</p>
+    <form ng-submit="addPoll()"
         style="margin-top:30px;">
         
-        <div class="form-group">
+        <div class="form-group" ng-submit="addPoll()">
             <input type="text"
             class="form-control"
             placeholder="Question"
             ng-model="question"></input>
         </div>
         <div class="form-group">
-        <input type="text"
-        class="form-control"
-        placeholder="choice"
-        ng-model="choice"></input>
+        <input class="form-control" ng-repeat="choice in choices track by $index" required ng-model="choice.option">
         </div>
         
-        <button type="submit" class="btn btn-primary" >Create Poll</button>
+        <span class="btn btn-info form-control" ng-click="addChoice()">Add Choice</span>
+        <button type="submit" class="btn btn-primary form-control" >Create Poll</button>
     </form>
 </div>

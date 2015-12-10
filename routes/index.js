@@ -58,9 +58,9 @@ router.param('poll', function(req, res, next, id) {
   });
 });
 
-router.get('/polls/:poll', function(req, res) {
-    res.json(req.poll);
-});
+// router.get('/polls/:poll', function(req, res) {
+//     res.json(req.poll);
+// });
 
 // router.get("/profile", function(req, res, next) {
 //   Poll.find({author: req.payload.username},function(err, polls){
@@ -102,6 +102,5 @@ router.post("/polls", auth, function(req, res, next) {
     res.json(poll);
   });
 });
-
 
 module.exports = router;

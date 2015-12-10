@@ -4,9 +4,11 @@
 <a href="/#/newpoll"><p>Create new poll</p></a>
 </aside>
 <div class="col-md-6 ">
-      <div class="col-md-3 text-center" ng-repeat="poll in polls">
-        <p>{{poll.question}}</p>
+      <div class="col-md-4 text-center" ng-repeat="poll in polls">
+        <p>{{poll.question}}</p><span ng-click="deletePoll(poll._id, poll)">Delete</span>
+        <div class="col-md-4 text-center" ng-repeat="choice in poll.choices">
+          <p>{{choice.option}}</p>
         </div>
-      </div>
+        </div>
     </div>
 </div>
