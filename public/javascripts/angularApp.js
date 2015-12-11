@@ -152,12 +152,10 @@
     $scope.labels = [];
     $scope.data = [];  
     
-      for(var i =0; i<2; i++){
+      for(var i =0; i<poll.data[0].choices.length; i++){
         $scope.labels.push(poll.data[0].choices[i].option);
         $scope.data.push(poll.data[0].choices[i].votes);
       }
-    
-
   
   }]);
   
